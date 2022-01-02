@@ -1,4 +1,5 @@
 import pygame
+import pyganim as pyganim
 from pygame import *
 
 # Объявляем переменные
@@ -18,18 +19,60 @@ PLATFORM_COLOR = "#FF6262"
 PLATFORM_WIDTH = 32
 PLATFORM_HEIGHT = 32
 PLATFORM_COLOR = "#FF6262"
+ANIMATION_DELAY = 0.1 # скорость смены кадров
+ANIMATION_RIGHT = [('игрок/r1.png'),
+                ('игрок/r2.png'),
+                ('игрок/r3.png'),]
+ANIMATION_LEFT = [('игрок/l1.png'),
+                ('игрок/l2.png'),
+                ('игрок/l3.png')]
+ANIMATION_JUMP_LEFT = [('игрок/l4.png', 0.1)]
+ANIMATION_JUMP_RIGHT = [('игрок/r4.png', 0.1)]
+ANIMATION_JUMP = [('mario/j.png', 0.1)]
+ANIMATION_STAY = [('mario/stay.png', 0.1)]
 
 
 class Platform(sprite.Sprite):
     def __init__(self, x, y):
         sprite.Sprite.__init__(self)
         self.image = Surface((PLATFORM_WIDTH, PLATFORM_HEIGHT))
-        self.image.fill(Color(PLATFORM_COLOR))
+        self.image = image.load("pictures/tile4.png")
         self.rect = Rect(x, y, PLATFORM_WIDTH, PLATFORM_HEIGHT)
 
 
 class Player(sprite.Sprite):
     def __init__(self, x, y):
+        self.image.set_colorkey(Color(COLOR))  # делаем фон прозрачным
+        #        Анимация движения вправо
+        boltAnim = []
+        for anim in ANIMATION_LEFT:
+            boltAnim.append((anim, ANIMATION_DELAY))
+        for anim in ANIMATION_RIGHT:
+            boltAnim.append((anim, ANIMATION_DELAY))
+        self.boltAnimRight = pyganim.PygAnimation(boltAnim)
+        self.boltAnimRight.play()
+        #        Анимация движения влево
+        boltAnim = []
+        for anim in ANIMATION_LEFT:
+            boltAnim.append((anim, ANIMATION_DELAY))
+        self.boltAnimLeft = pyganim.PygAnimation(boltAnim)
+        self.boltAnimLeft.play()
+
+        self.boltAnimStay = pyganim.PygAnimation(ANIMATION_STAY)
+        self.boltAnimStay.play()
+        self.boltAnimStay.blit(self.image, (0, 0))  # По-умолчанию, стоим
+
+        self.boltAnimJumpLeft = pyganim.PygAnimation(ANIMATION_JUMP_LEFT)
+        self.boltAnimJumpLeft.play()
+
+        self.boltAnimJumpRight = pyganim.PygAnimation(ANIMATION_JUMP_RIGHT)
+        self.boltAnimJumpRight.play()
+
+        self.boltAnimJump = pyganim.PygAnimation(ANIMATION_JUMP)
+        self.boltAnimJump.play()
+
+        self.boltAnimJump = pyganim.PygAnimation(ANIMATION_JUMP)
+        self.boltAnimJump.play()
         self.yvel = 0  # скорость вертикального перемещения
         self.onGround = False  # На земле ли я?
         sprite.Sprite.__init__(self)
@@ -40,21 +83,33 @@ class Player(sprite.Sprite):
         self.image.fill(Color(COLOR))
         self.rect = Rect(x, y, WIDTH, HEIGHT)  # прямоугольный объект
 
-    def update(self, left, right, up):
+    def update(self, left, right, up, platforms):
         if up:
             if self.onGround:  # прыгаем, только когда можем оттолкнуться от земли
                 self.yvel = -JUMP_POWER
+            self.image.fill(Color(COLOR))
+            self.boltAnimJump.blit(self.image, (0, 0))
+
         if left:
             self.xvel = -MOVE_SPEED  # Лево = x- n
+            self.image.fill(Color(COLOR))
+            if up:  # для прыжка влево есть отдельная анимация
+                self.boltAnimJumpLeft.blit(self.image, (0, 0))
+            else:
+                self.boltAnimLeft.blit(self.image, (0, 0))
 
         if right:
             self.xvel = MOVE_SPEED  # Право = x + n
-
+            self.image.fill(Color(COLOR))
+            if up:
+                self.boltAnimJumpRight.blit(self.image, (0, 0))
+            else:
+                self.boltAnimRight.blit(self.image, (0, 0))
         if not (left or right):  # стоим, когда нет указаний идти
             self.xvel = 0
-
-        if not self.onGround:
-            self.yvel += GRAVITY
+            if not up:
+                self.image.fill(Color(COLOR))
+                self.boltAnimStay.blit(self.image, (0, 0))
 
         self.onGround = False;  # Мы не знаем, когда мы на земле((
         self.rect.y += self.yvel
@@ -154,7 +209,7 @@ def main():
             y += PLATFORM_HEIGHT  # то же самое и с высотой
             x = 0  # на каждой новой строчке начинаем с нуля
         # screen.blit(bg, (0, 0))  # Каждую итерацию необходимо всё перерисовывать
-        hero.update(self, left, right, up, platforms)   # передвижение
+        hero.update(left, right, up, platforms)   # передвижение
         entities.draw(screen) # отображение всего
         pygame.display.update()  # обновление и вывод всех изменений на экран
 
