@@ -1,7 +1,7 @@
 import pygame
 import pyganim as pyganim
 from pygame import *
-
+# у героя должна быть анимка
 # Объявляем переменные
 WIN_WIDTH = 800  # Ширина создаваемого окна
 WIN_HEIGHT = 640  # Высота
