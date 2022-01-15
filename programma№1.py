@@ -1,10 +1,7 @@
 import pygame
 from pygame import *
-import player
-import Characters
 
-# у героя должна быть анимка
-# Объявляем переменные
+
 WIN_WIDTH = 800  # Ширина создаваемого окна
 WIN_HEIGHT = 640  # Высота
 MOVE_SPEED = 7
@@ -19,16 +16,6 @@ PLATFORM_WIDTH = 32
 PLATFORM_HEIGHT = 32
 PLATFORM_COLOR = "#FF6262"
 ANIMATION_DELAY = 0.1  # скорость смены кадров
-ANIMATION_RIGHT = ['игрок/r1.png',
-                   'игрок/r2.png',
-                   'игрок/r3.png', ]
-ANIMATION_LEFT = ['игрок/l1.png',
-                  'игрок/l2.png',
-                  'игрок/l3.png']
-ANIMATION_JUMP_LEFT = [('игрок/l4.png', 0.1)]
-ANIMATION_JUMP_RIGHT = [('игрок/r4.png', 0.1)]
-ANIMATION_JUMP = [('mario/j.png', 0.1)]
-ANIMATION_STAY = [('mario/stay.png', 0.1)]
 
 
 class Platform(sprite.Sprite):
@@ -43,7 +30,7 @@ def main():
     pygame.init()  # Инициация PyGame, обязательная строчка
     screen = pygame.display.set_mode(DISPLAY)  # Создаем окошко
     pygame.display.set_caption("Super Mario Boy")  # Пишем в шапку
-    hero = player.Player(55, 55)  # создаем героя по (x,y) координатам
+    hero = player(55, 55)  # создаем героя по (x,y) координатам
     left = right = False  # по умолчанию — стоим
     up = False
     bg = Surface((WIN_WIDTH, WIN_HEIGHT))  # Создание видимой поверхности

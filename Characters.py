@@ -1,5 +1,6 @@
 import pygame
 from pygame import *
+import pygame_menu
 COLOR = "#888888"
 
 MOVE_SPEED = 7
@@ -24,15 +25,15 @@ screen = pygame.display.set_mode(SIZE)
 
 
 class Character(pygame.sprite.Sprite):
-    def __init__(self, x, y, images, *groups):
+    def __init__(self, hp, dmg, x, y, images, *groups):
         # добавление в группы
         super(Character, self).__init__(*groups)
+        self.hp = hp
+        self.dmg = dmg
         self.index = 0
         self.images = images
-        # вешаем картинку на персонажа и границы
         self.image = self.images[self.index]
         self.rect = self.image.get_rect()
-        # устанавливаем позицию персонажа по x и y
         self.rect.x, self.rect.y = (x, y)
 
 
