@@ -1,6 +1,6 @@
 import pygame
 from pygame import *
-
+import player
 
 WIN_WIDTH = 800  # Ширина создаваемого окна
 WIN_HEIGHT = 640  # Высота
@@ -30,7 +30,7 @@ def main():
     pygame.init()  # Инициация PyGame, обязательная строчка
     screen = pygame.display.set_mode(DISPLAY)  # Создаем окошко
     pygame.display.set_caption("Super Mario Boy")  # Пишем в шапку
-    hero = player(55, 55)  # создаем героя по (x,y) координатам
+    hero = player.Player(55, 55)  # создаем героя по (x,y) координатам
     left = right = False  # по умолчанию — стоим
     up = False
     bg = Surface((WIN_WIDTH, WIN_HEIGHT))  # Создание видимой поверхности
