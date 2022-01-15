@@ -1,7 +1,7 @@
-import os
 import pygame
 import pygame_menu
 import sys
+import os
 # инициализация pygame
 pygame.init()
 
@@ -18,17 +18,17 @@ player_group = pygame.sprite.Group()
 
 
 class Character(pygame.sprite.Sprite):
-    def __init__(self, x, y, images, *groups):
+    def __init__(self, hp, dmg, x, y, images, *groups):
         # добавление в группы
         super(Character, self).__init__(*groups)
+        self.hp = hp
+        self.dmg = dmg
         self.index = 0
         self.images = images
-        # вешаем картинку на персонажа и границы
         self.image = self.images[self.index]
         self.rect = self.image.get_rect()
-        # устанавливаем позицию персонажа по x и y
-        self.rect.x, self.rect.y = (x, y)
-# запуск анимации, принимает в себя базу изображений
+        self.rect.x = x
+        self.rect.y = y
 
     def startAnimation(self, base_images):
         self.index += 1
@@ -36,13 +36,26 @@ class Character(pygame.sprite.Sprite):
             self.index = 0
         self.image = base_images[self.index]
 
-    def update(self):
-        # update будет выполняться каждый шаг цикла игры, поэтому здесь все, что должно обновляться
-        self.startAnimation(self.images)
-        if self.rect.x >= 10:
-            self.rect.x = self.rect.x - 10
-        else:
-            self.rect.x = 315
+    # def stopAnimation(self, base_images):
+
+
+
+class Player(Character):
+    def __init__(self, hp, dmg, x, y, images, *groups):
+        super().__init__(hp, dmg, x, y, images, *groups)
+        self.MOVE_SPEED = 7
+        self.JUMP_POWER = 10
+
+    # def update(self):
+    #     key = pygame.key.get_pressed()
+    #     if key[pygame.K_LEFT] and self.rect.x > 0:
+    #         self.rect.x -= self.stage_speed
+    #     if key[pygame.K_RIGHT] and self.rect.x < WIDTH - self.w:
+    #         self.rect.x += self.stage_speed
+
+
+class Enemy(Character):
+    pass
 
 
 def load_image(name, colorkey=None):
@@ -63,25 +76,23 @@ def load_image(name, colorkey=None):
 
 
 def startGame():
-    # база картинок для дракоши
-    pavuk_walk = [
+    clock = pygame.time.Clock()
+    # игра - это цикл
+    ANIMATION_LEFT = [
         load_image("pavuk/walk0.gif", colorkey=-1),
         load_image("pavuk/walk1.gif", colorkey=-1),
         load_image("pavuk/walk2.gif", colorkey=-1),
         load_image("pavuk/walk3.gif", colorkey=-1),
         load_image("pavuk/walk4.gif", colorkey=-1)
     ]
-    pavuk_idle = [
-        load_image("pavuk/idle0.gif", colorkey=-1),
-        load_image("pavuk/idle1.gif", colorkey=-1),
-        load_image("pavuk/idle2.gif", colorkey=-1),
-        load_image("pavuk/idle3.gif", colorkey=-1)
+    ANIMATION_RIGHT = [
+        pygame.transform.flip(ANIMATION_LEFT[0], True, False),
+        pygame.transform.flip(ANIMATION_LEFT[1], True, False),
+        pygame.transform.flip(ANIMATION_LEFT[2], True, False),
+        pygame.transform.flip(ANIMATION_LEFT[3], True, False),
+        pygame.transform.flip(ANIMATION_LEFT[4], True, False)
     ]
-    # создаем нашего героя, что будет ходить (экземпляр класса Character)
-    my_player = Character(315, 150, pavuk_walk, player_group, all_sprites)
-    # часики
-    clock = pygame.time.Clock()
-    # игра - это цикл
+    my_player = Character(100, 15, 55, 55, ANIMATION_LEFT, all_sprites)
     running = True
     while running:
         # обработка событий
@@ -90,30 +101,36 @@ def startGame():
             if event.type == pygame.QUIT:
                 # завершаем цикл игры
                 running = False
+            if event.type == pygame.QUIT:
+                game_exit = True
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_w:
+                    my_player.rect.x += 25
+                    my_player.startAnimation(ANIMATION_RIGHT)
+                if event.key == pygame.K_s:
+                    my_player.rect.x -= 25
+                    my_player.startAnimation(ANIMATION_LEFT)
+                # if event.key == pygame.K_a:
+                #      -= 25
+                # if event.key == pygame.K_d:
+                #      += 25
         # задаем фон экрана
         screen.fill((0, 0, 0))
-        # мы добавили my_player в группу, поэтому он обновится
         all_sprites.update()
 
         # визуализация
         all_sprites.draw(screen)
         # замедляем время
-        clock.tick(4)
+        clock.tick(10)
         # обновление
         pygame.display.flip()
 
 
-menu = pygame_menu.Menu("Minotaur's Labyrinth", 500, 500,
-                            theme=pygame_menu.themes.THEME_BLUE)
+menu = pygame_menu.Menu("Minotaur's Labyrinth", 500, 500, theme=pygame_menu.themes.THEME_GREEN)
+
 
 menu.add.button('Play', startGame)
 menu.add.button('Quit', pygame_menu.events.EXIT)
 menu.mainloop(screen)
-
-# import pygame
-# from pygame import *
-# import pygame_menu
-# COLOR = "#888888"
-
 
 
