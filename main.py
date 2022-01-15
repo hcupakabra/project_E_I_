@@ -1,4 +1,3 @@
-
 import pygame
 import pygame_menu
 
@@ -48,10 +47,9 @@ class Character(pygame.sprite.Sprite):
 def startGame():
     # база картинок для дракоши
     images_my_player = [
-        pygame.image.load("data/pavuk/frame_0_delay-0.1s.gif"),
-        pygame.image.load("data/pavuk/frame_1_delay-0.1s.gif"),
-        pygame.image.load("data/pavuk/frame_2_delay-0.1s.gif"),
-        pygame.image.load("data/pavuk/frame_3_delay-0.1s.gif")
+        pygame.image.load('pictures/paint/r1.png'),
+        pygame.image.load('pictures/paint/r2.png'),
+        pygame.image.load('pictures/paint/r3.png')
     ]
     # создаем нашего героя, что будет ходить (экземпляр класса Character)
     my_player = Character(315, 150, images_my_player, player_group, all_sprites)
@@ -74,7 +72,7 @@ def startGame():
         # визуализация
         all_sprites.draw(screen)
         # замедляем время
-        clock.tick(4)
+        clock.tick(10)
         # обновление
         pygame.display.flip()
 
