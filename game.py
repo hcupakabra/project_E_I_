@@ -7,14 +7,11 @@ from level import *
 from load_file import load_image
 # инициализация pygame
 pygame.init()
-
+SIZE = (WIDTH, HEIGHT) = (800, 800)
 # задаем базовые константы (переменные, которые не хотим менятьб по PEP8 пишутся большими буквами)
-SIZE = (WIDTH, HEIGHT) = (1000, 1000)
 FONT = pygame_menu.font.FONT_8BIT
-
 # задаем сам экран, соответствующего размера
 screen = pygame.display.set_mode(SIZE)
-
 # место для групп (будем группировать объекты в игре, чтобы можно было запускать действия сразу для всех в группе)
 all_sprites = pygame.sprite.Group()
 player_group = pygame.sprite.Group()
@@ -58,8 +55,8 @@ def startGame():
     clock = pygame.time.Clock()
     # игра - это цикл
     player, level_x, level_y = generate_level(load_level('level.txt'))
-    my_player = Player(100, 15, 96, 300, player_group, all_sprites)
-    enemy = Enemy(10, 5, 250, 290, enemy_group, all_sprites)
+    my_player = Player(100, 15, 600, 700, player_group, all_sprites)
+    enemy = Enemy(10, 5, 700, 690, enemy_group, all_sprites)
     running = True
     while running:
         # обработка событий
@@ -80,7 +77,8 @@ def startGame():
         pygame.display.flip()
 
 
-menu = pygame_menu.Menu("Minotaur's Labyrinth", 1000, 1000, theme=pygame_menu.themes.THEME_GREEN)
+menu = pygame_menu.Menu("Minotaur's Labyrinth", 800, 800, theme=pygame_menu.themes.THEME_GREEN)
+
 
 
 menu.add.button('Play', startGame)
