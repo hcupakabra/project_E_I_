@@ -4,6 +4,7 @@ import sys
 import os
 from Characters import *
 from level import *
+import load_file
 # инициализация pygame
 pygame.init()
 
@@ -19,64 +20,6 @@ all_sprites = pygame.sprite.Group()
 player_group = pygame.sprite.Group()
 enemy_group = pygame.sprite.Group()
 
-
-def load_image(name, colorkey=None):
-    fullname = os.path.join("data", name)
-    # если файл не существует, то выходим
-    if not os.path.isfile(fullname):
-        print(f"Файл с изображением '{fullname}' не найден")
-        sys.exit()
-    image = pygame.image.load(fullname)
-    print(image)
-    if colorkey is not None:
-        image = image.convert()
-        if colorkey == -1:
-            colorkey = image.get_at((0, 0))
-        image.set_colorkey(colorkey)
-    else:
-        image = image.convert_alpha()
-    return image
-
-
-animation_LEFT_Enemy = [
-        load_image("pavuk/walk0.gif", colorkey=-1),
-        load_image("pavuk/walk1.gif", colorkey=-1),
-        load_image("pavuk/walk2.gif", colorkey=-1),
-        load_image("pavuk/walk3.gif", colorkey=-1),
-        load_image("pavuk/walk4.gif", colorkey=-1)]
-animation_IDLE = [
-        load_image("pavuk/idle0.gif", colorkey=-1),
-        load_image("pavuk/idle1.gif", colorkey=-1),
-        load_image("pavuk/idle2.gif", colorkey=-1),
-        load_image("pavuk/idle3.gif", colorkey=-1)]
-animation_RIGHT = [
-    pygame.transform.scale(load_image('Player/r1.png', colorkey=-1), (100, 100)),
-    pygame.transform.scale(load_image('Player/r2.png', colorkey=-1), (100, 100)),
-    pygame.transform.scale(load_image('Player/r3.png', colorkey=-1), (100, 100))]
-animation_LEFT_Player = [
-    pygame.transform.scale(load_image('Player/l1.png', colorkey=-1), (100, 100)),
-    pygame.transform.scale(load_image('Player/l2.png', colorkey=-1), (100, 100)),
-    pygame.transform.scale(load_image('Player/l3.png', colorkey=-1), (100, 100))]
-animation_STAY = [pygame.transform.scale(load_image('Player/stay.png', colorkey=-1), (100, 100))]
-
-
-def load_level(filename):
-    filename = "data/" + filename
-    # читаем уровень, убирая символы перевода строки
-    with open(filename, 'r') as mapFile:
-        level_map = [line.strip() for line in mapFile]
-
-    # и подсчитываем максимальную длину
-    max_width = max(map(len, level_map))
-
-    # дополняем каждую строку пустыми клетками ('.')
-    return list(map(lambda x: x.ljust(max_width, '.'), level_map))
-
-
-tile_images = {
-    'wall': pygame.transform.scale(load_image('level_blocks/main_block.png'), (48, 48)),
-    'empty': load_image('level_blocks/background_block.png')
-}
 # player_image = load_image('mario.png')
 
 tile_width = tile_height = 50
@@ -103,7 +46,8 @@ def generate_level(level):
                 Tile('wall', x, y)
             elif level[y][x] == '@':
                 Tile('empty', x, y)
-                new_player = Player(100, 15, x, y, [animation_LEFT_Player, animation_STAY, animation_RIGHT], player_group, all_sprites)
+                new_player = Player(100, 15, x, y, [load_file.animation_LEFT_Player, load_file.animation_STAY,
+                                                    load_file.animation_RIGHT], player_group, all_sprites)
     # вернем игрока, а также размер поля в клетках
     return new_player, x, y
 
@@ -113,7 +57,7 @@ def startGame():
     # игра - это цикл
     player, level_x, level_y = generate_level(load_level('level.txt'))
     # new_player = Player(100, 15, x, y, [animation_LEFT_Player, animation_RIGHT, animation_STAY], player_group, all_sprites)
-    enemy = Enemy(10, 5, 250, 290, [animation_LEFT_Enemy, animation_IDLE], enemy_group, all_sprites)
+    enemy = Enemy(10, 5, 250, 290, [load_file.animation_LEFT_Enemy, load_file.animation_IDLE], enemy_group, all_sprites)
     running = True
     while running:
         # обработка событий
