@@ -1,6 +1,8 @@
 import os
 import sys
 import pygame
+
+
 # инициализация pygame
 # pygame.init()
 
@@ -29,6 +31,7 @@ class Player(Character):
         super().__init__(hp, dmg, x, y, *groups)
         self.MOVE_SPEED = 7
         self.JUMP_POWER = 10
+        print(images[0])
         self.animation_LEFT = images[0]
         self.animation_IDLE = images[1]
         self.animation_RIGHT = images[2]
@@ -49,7 +52,7 @@ class Player(Character):
 class Enemy(Character):
     def __init__(self, hp, dmg, x, y, images, *groups):
         super().__init__(hp, dmg, x, y, *groups)
-        self.movement_speed = 7
+        self.MOVE_SPEED = 7
         self.distance_to_player = 50
         self.animation_IDLE = images[0]
         self.animation_LEFT = images[1]
@@ -60,4 +63,4 @@ class Enemy(Character):
             self.startAnimation(self.animation_IDLE)
         else:
             self.startAnimation(self.animation_LEFT)
-            self.rect.x -= self.movement_speed
+            self.rect.x -= self.MOVE_SPEED

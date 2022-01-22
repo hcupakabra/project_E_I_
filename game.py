@@ -21,12 +21,13 @@ enemy_group = pygame.sprite.Group()
 
 
 def load_image(name, colorkey=None):
-    fullname = os.path.join('data', name)
+    fullname = os.path.join("data", name)
     # если файл не существует, то выходим
     if not os.path.isfile(fullname):
         print(f"Файл с изображением '{fullname}' не найден")
         sys.exit()
     image = pygame.image.load(fullname)
+    print(image)
     if colorkey is not None:
         image = image.convert()
         if colorkey == -1:
@@ -35,6 +36,28 @@ def load_image(name, colorkey=None):
     else:
         image = image.convert_alpha()
     return image
+
+
+animation_LEFT_Enemy = [
+        load_image("pavuk/walk0.gif", colorkey=-1),
+        load_image("pavuk/walk1.gif", colorkey=-1),
+        load_image("pavuk/walk2.gif", colorkey=-1),
+        load_image("pavuk/walk3.gif", colorkey=-1),
+        load_image("pavuk/walk4.gif", colorkey=-1)]
+animation_IDLE = [
+        load_image("pavuk/idle0.gif", colorkey=-1),
+        load_image("pavuk/idle1.gif", colorkey=-1),
+        load_image("pavuk/idle2.gif", colorkey=-1),
+        load_image("pavuk/idle3.gif", colorkey=-1)]
+animation_RIGHT = [
+    pygame.transform.scale(load_image('Player/r1.png', colorkey=-1), (100, 100)),
+    pygame.transform.scale(load_image('Player/r2.png', colorkey=-1), (100, 100)),
+    pygame.transform.scale(load_image('Player/r3.png', colorkey=-1), (100, 100))]
+animation_LEFT_Player = [
+    pygame.transform.scale(load_image('Player/l1.png', colorkey=-1), (100, 100)),
+    pygame.transform.scale(load_image('Player/l2.png', colorkey=-1), (100, 100)),
+    pygame.transform.scale(load_image('Player/l3.png', colorkey=-1), (100, 100))]
+animation_STAY = [pygame.transform.scale(load_image('Player/stay.png', colorkey=-1), (100, 100))]
 
 
 def load_level(filename):
@@ -66,6 +89,7 @@ class Tile(pygame.sprite.Sprite):
         self.rect = self.image.get_rect().move(
             tile_width * pos_x, tile_height * pos_y)
 
+
 tiles_group = pygame.sprite.Group()
 
 
@@ -79,7 +103,7 @@ def generate_level(level):
                 Tile('wall', x, y)
             elif level[y][x] == '@':
                 Tile('empty', x, y)
-                new_player = Player(100, 15, 100, 100)
+                new_player = Player(100, 15, x, y, [animation_LEFT_Player, animation_STAY, animation_RIGHT], player_group, all_sprites)
     # вернем игрока, а также размер поля в клетках
     return new_player, x, y
 
@@ -88,8 +112,8 @@ def startGame():
     clock = pygame.time.Clock()
     # игра - это цикл
     player, level_x, level_y = generate_level(load_level('level.txt'))
-    my_player = Player(100, 15, 96, 300, player_group, all_sprites)
-    enemy = Enemy(10, 5, 250, 290, enemy_group, all_sprites)
+    # new_player = Player(100, 15, x, y, [animation_LEFT_Player, animation_RIGHT, animation_STAY], player_group, all_sprites)
+    enemy = Enemy(10, 5, 250, 290, [animation_LEFT_Enemy, animation_IDLE], enemy_group, all_sprites)
     running = True
     while running:
         # обработка событий
@@ -101,7 +125,7 @@ def startGame():
         # задаем фон экрана
         screen.fill((0, 0, 0))
         player_group.update()
-        enemy_group.update(my_player)
+        enemy_group.update(player)
         # визуализация
         all_sprites.draw(screen)
         # замедляем время
