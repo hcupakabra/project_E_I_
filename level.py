@@ -2,6 +2,7 @@ import pygame
 import sys
 import os
 from Characters import *
+from load_file import load_image
 pygame.init()
 SIZE = (WIDTH, HEIGHT) = (500, 500)
 screen = pygame.display.set_mode(SIZE)
@@ -20,21 +21,21 @@ def load_level(filename):
     return list(map(lambda x: x.ljust(max_width, '.'), level_map))
 
 
-def load_image(name, colorkey=None):
-    fullname = os.path.join('data', name)
-    # если файл не существует, то выходим
-    if not os.path.isfile(fullname):
-        print(f"Файл с изображением '{fullname}' не найден")
-        sys.exit()
-    image = pygame.image.load(fullname)
-    if colorkey is not None:
-        image = image.convert()
-        if colorkey == -1:
-            colorkey = image.get_at((0, 0))
-        image.set_colorkey(colorkey)
-    else:
-        image = image.convert_alpha()
-    return image
+# def load_image(name, colorkey=None):
+#     fullname = os.path.join('data', name)
+#     # если файл не существует, то выходим
+#     if not os.path.isfile(fullname):
+#         print(f"Файл с изображением '{fullname}' не найден")
+#         sys.exit()
+#     image = pygame.image.load(fullname)
+#     if colorkey is not None:
+#         image = image.convert()
+#         if colorkey == -1:
+#             colorkey = image.get_at((0, 0))
+#         image.set_colorkey(colorkey)
+#     else:
+#         image = image.convert_alpha()
+#     return image
 
 
 tile_images = {
@@ -69,7 +70,7 @@ def generate_level(level):
                 Tile('wall', x, y)
             elif level[y][x] == '@':
                 Tile('empty', x, y)
-                new_player = Player(100, 15, 100, 100)
+                # new_player = Player(100, 15, 100, 100)
     # вернем игрока, а также размер поля в клетках
     return new_player, x, y
 

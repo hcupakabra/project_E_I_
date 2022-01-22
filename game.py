@@ -4,7 +4,7 @@ import sys
 import os
 from Characters import *
 from level import *
-import load_file
+from load_file import load_image
 # инициализация pygame
 pygame.init()
 
@@ -20,7 +20,41 @@ all_sprites = pygame.sprite.Group()
 player_group = pygame.sprite.Group()
 enemy_group = pygame.sprite.Group()
 
-# player_image = load_image('mario.png')
+
+# def load_image(name, colorkey=None):
+#     fullname = os.path.join('data', name)
+#     # если файл не существует, то выходим
+#     if not os.path.isfile(fullname):
+#         print(f"Файл с изображением '{fullname}' не найден")
+#         sys.exit()
+#     image = pygame.image.load(fullname)
+#     if colorkey is not None:
+#         image = image.convert()
+#         if colorkey == -1:
+#             colorkey = image.get_at((0, 0))
+#         image.set_colorkey(colorkey)
+#     else:
+#         image = image.convert_alpha()
+#     return image
+
+
+# def load_level(filename):
+#     filename = "data/" + filename
+#     # читаем уровень, убирая символы перевода строки
+#     with open(filename, 'r') as mapFile:
+#         level_map = [line.strip() for line in mapFile]
+#
+#     # и подсчитываем максимальную длину
+#     max_width = max(map(len, level_map))
+#
+#     # дополняем каждую строку пустыми клетками ('.')
+#     return list(map(lambda x: x.ljust(max_width, '.'), level_map))
+
+
+tile_images = {
+    'wall': pygame.transform.scale(load_image('level_blocks/main_block.png'), (48, 48)),
+    'empty': load_image('level_blocks/background_block.png')
+}
 
 tile_width = tile_height = 50
 
@@ -46,8 +80,7 @@ def generate_level(level):
                 Tile('wall', x, y)
             elif level[y][x] == '@':
                 Tile('empty', x, y)
-                new_player = Player(100, 15, x, y, [load_file.animation_LEFT_Player, load_file.animation_STAY,
-                                                    load_file.animation_RIGHT], player_group, all_sprites)
+                # new_player = Player(100, 15, 100, 100)
     # вернем игрока, а также размер поля в клетках
     return new_player, x, y
 
@@ -56,8 +89,8 @@ def startGame():
     clock = pygame.time.Clock()
     # игра - это цикл
     player, level_x, level_y = generate_level(load_level('level.txt'))
-    # new_player = Player(100, 15, x, y, [animation_LEFT_Player, animation_RIGHT, animation_STAY], player_group, all_sprites)
-    enemy = Enemy(10, 5, 250, 290, [load_file.animation_LEFT_Enemy, load_file.animation_IDLE], enemy_group, all_sprites)
+    my_player = Player(100, 15, 96, 300, player_group, all_sprites)
+    enemy = Enemy(10, 5, 250, 290, enemy_group, all_sprites)
     running = True
     while running:
         # обработка событий
@@ -69,7 +102,7 @@ def startGame():
         # задаем фон экрана
         screen.fill((0, 0, 0))
         player_group.update()
-        enemy_group.update(player)
+        enemy_group.update(my_player)
         # визуализация
         all_sprites.draw(screen)
         # замедляем время
