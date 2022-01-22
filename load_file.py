@@ -2,7 +2,9 @@ import os
 import sys
 import pygame
 pygame.init()
-from pygame import *
+# from pygame import *
+SIZE = (WIDTH, HEIGHT) = (500, 500)
+screen = pygame.display.set_mode(SIZE)
 
 
 def load_image(name, colorkey=None):
@@ -12,7 +14,6 @@ def load_image(name, colorkey=None):
         print(f"Файл с изображением '{fullname}' не найден")
         sys.exit()
     image = pygame.image.load(fullname)
-    print(image)
     if colorkey is not None:
         image = image.convert()
         if colorkey == -1:
