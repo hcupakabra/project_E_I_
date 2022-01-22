@@ -136,7 +136,7 @@ class Enemy(Character):
 
     def __init__(self, hp, dmg, x, y, *groups):
         super().__init__(hp, dmg, x, y, *groups)
-        self.movement_speed = 7
+        self.movement_speed = 35
         self.distance_to_player = 50
         self.image = self.animation_IDLE[self.index]
         self.w = 192

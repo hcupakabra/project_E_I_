@@ -9,7 +9,7 @@ from load_file import load_image
 pygame.init()
 
 # задаем базовые константы (переменные, которые не хотим менятьб по PEP8 пишутся большими буквами)
-SIZE = (WIDTH, HEIGHT) = (500, 500)
+SIZE = (WIDTH, HEIGHT) = (1000, 1000)
 FONT = pygame_menu.font.FONT_8BIT
 
 # задаем сам экран, соответствующего размера
@@ -19,37 +19,6 @@ screen = pygame.display.set_mode(SIZE)
 all_sprites = pygame.sprite.Group()
 player_group = pygame.sprite.Group()
 enemy_group = pygame.sprite.Group()
-
-
-# def load_image(name, colorkey=None):
-#     fullname = os.path.join('data', name)
-#     # если файл не существует, то выходим
-#     if not os.path.isfile(fullname):
-#         print(f"Файл с изображением '{fullname}' не найден")
-#         sys.exit()
-#     image = pygame.image.load(fullname)
-#     if colorkey is not None:
-#         image = image.convert()
-#         if colorkey == -1:
-#             colorkey = image.get_at((0, 0))
-#         image.set_colorkey(colorkey)
-#     else:
-#         image = image.convert_alpha()
-#     return image
-
-
-# def load_level(filename):
-#     filename = "data/" + filename
-#     # читаем уровень, убирая символы перевода строки
-#     with open(filename, 'r') as mapFile:
-#         level_map = [line.strip() for line in mapFile]
-#
-#     # и подсчитываем максимальную длину
-#     max_width = max(map(len, level_map))
-#
-#     # дополняем каждую строку пустыми клетками ('.')
-#     return list(map(lambda x: x.ljust(max_width, '.'), level_map))
-
 
 tile_images = {
     'wall': pygame.transform.scale(load_image('level_blocks/main_block.png'), (48, 48)),
@@ -80,7 +49,7 @@ def generate_level(level):
                 Tile('wall', x, y)
             elif level[y][x] == '@':
                 Tile('empty', x, y)
-                # new_player = Player(100, 15, 100, 100)
+                # new_player = Player(100, 15, 96, 300, player_group, all_sprites)
     # вернем игрока, а также размер поля в клетках
     return new_player, x, y
 
@@ -111,7 +80,7 @@ def startGame():
         pygame.display.flip()
 
 
-menu = pygame_menu.Menu("Minotaur's Labyrinth", 500, 500, theme=pygame_menu.themes.THEME_GREEN)
+menu = pygame_menu.Menu("Minotaur's Labyrinth", 1000, 1000, theme=pygame_menu.themes.THEME_GREEN)
 
 
 menu.add.button('Play', startGame)
