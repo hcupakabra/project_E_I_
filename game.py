@@ -55,7 +55,7 @@ def startGame():
     clock = pygame.time.Clock()
     # игра - это цикл
     player, level_x, level_y = generate_level(load_level('level.txt'))
-    my_player = Player(100, 15, 600, 700, player_group, all_sprites)
+    my_player = Player(100, 15, 600, 500, player_group, all_sprites)
     enemy = Enemy(10, 5, 700, 690, enemy_group, all_sprites)
     running = True
     while running:
