@@ -40,8 +40,7 @@ class Character(pygame.sprite.Sprite):
 class Player(Character):
     def __init__(self, hp, dmg, x, y, *groups):
         super().__init__(hp, dmg, x, y, *groups)
-        self.MOVE_SPEED = 10
-        self.MOVE_SPEED = 7
+        self.MOVE_SPEED = 20
         self.JUMP_POWER = 10
         self.image = load_file.animation_STAY_Player[self.index]
         self.w = 100
@@ -51,15 +50,35 @@ class Player(Character):
         if key[pygame.K_LEFT]:
             self.rect.x -= self.MOVE_SPEED
             self.startAnimation(load_file.animation_LEFT_Player)
+            if key[pygame.K_1]:
+                self.startAnimation(load_file.animation_LGUN_Player)
+            if key[pygame.K_UP]:
+                self.rect.y -= self.MOVE_SPEED
+                self.startAnimation(load_file.animation_LUP_Player)
+            if key[pygame.K_DOWN]:
+                self.rect.y += self.MOVE_SPEED
+                self.startAnimation(load_file.animation_LDOWN_Player)
         elif key[pygame.K_RIGHT]:
             self.rect.x += self.MOVE_SPEED
             self.startAnimation(load_file.animation_RIGHT_Player)
+            if key[pygame.K_1]:
+                self.startAnimation(load_file.animation_RGUN_Player)
+            if key[pygame.K_UP]:
+                self.rect.y -= self.MOVE_SPEED
+                self.startAnimation(load_file.animation_RUP_Player)
+            if key[pygame.K_DOWN]:
+                self.rect.y += self.MOVE_SPEED
+                self.startAnimation(load_file.animation_RDOWN_Player)
         elif key[pygame.K_UP]:
             self.rect.y -= self.MOVE_SPEED
+            self.startAnimation(load_file.animation_UP_Player)
         elif key[pygame.K_DOWN]:
             self.rect.y += self.MOVE_SPEED
+            self.startAnimation(load_file.animation_DOWN_Player)
         else:
             self.startAnimation(load_file.animation_STAY_Player)
+            if key[pygame.K_1]:
+                self.startAnimation(load_file.animation_SGUN_Player)
 
 
 class Enemy(Character):

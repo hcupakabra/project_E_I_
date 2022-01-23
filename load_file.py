@@ -79,6 +79,22 @@ animation_LEFT_Player = [
     pygame.transform.scale(load_image('player/l2.png', colorkey=-1), (50, 50)),
     pygame.transform.scale(load_image('player/l3.png', colorkey=-1), (50, 50))]
 animation_STAY_Player = [pygame.transform.scale(load_image('player/stay.png', colorkey=-1), (50, 50))]
+animation_UP_Player = [pygame.transform.scale(load_image('player/j.png', colorkey=-1), (50, 50))]
+animation_RUP_Player = [pygame.transform.scale(load_image('player/rj1.png', colorkey=-1), (50, 50)),
+                        pygame.transform.scale(load_image('player/rj2.png', colorkey=-1), (50, 50))]
+animation_LUP_Player = [pygame.transform.scale(load_image('player/lj1.png', colorkey=-1), (50, 50)),
+                        pygame.transform.scale(load_image('player/lj2.png', colorkey=-1), (50, 50))]
+
+animation_DOWN_Player = [pygame.transform.scale(load_image('player/down.png', colorkey=-1), (50, 50))]
+animation_RDOWN_Player = [pygame.transform.scale(load_image('player/rdown.png', colorkey=-1), (50, 50))]
+animation_LDOWN_Player = [pygame.transform.scale(load_image('player/ldown.png', colorkey=-1), (50, 50))]
+animation_RGUN_Player = [pygame.transform.scale(load_image('player/rgun1.png', colorkey=-1), (50, 50)),
+                         pygame.transform.scale(load_image('player/rgun2.png', colorkey=-1), (50, 50)),
+                         pygame.transform.scale(load_image('player/rgun3.png', colorkey=-1), (50, 50))]
+animation_LGUN_Player = [pygame.transform.scale(load_image('player/lgun1.png', colorkey=-1), (50, 50)),
+                         pygame.transform.scale(load_image('player/lgun2.png', colorkey=-1), (50, 50)),
+                         pygame.transform.scale(load_image('player/lgun3.png', colorkey=-1), (50, 50))]
+animation_SGUN_Player = [pygame.transform.scale(load_image('player/staygun.png', colorkey=-1), (50, 50))]
 
 
 def load_level(filename):
