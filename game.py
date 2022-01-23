@@ -4,23 +4,23 @@ import sys
 import os
 from Characters import *
 from level import *
-import load_file
+from load_file import load_image
 # инициализация pygame
 pygame.init()
-
+SIZE = (WIDTH, HEIGHT) = (800, 800)
 # задаем базовые константы (переменные, которые не хотим менятьб по PEP8 пишутся большими буквами)
-SIZE = (WIDTH, HEIGHT) = (500, 500)
 FONT = pygame_menu.font.FONT_8BIT
-
 # задаем сам экран, соответствующего размера
 screen = pygame.display.set_mode(SIZE)
-
 # место для групп (будем группировать объекты в игре, чтобы можно было запускать действия сразу для всех в группе)
 all_sprites = pygame.sprite.Group()
 player_group = pygame.sprite.Group()
 enemy_group = pygame.sprite.Group()
 
-# player_image = load_image('mario.png')
+tile_images = {
+    'wall': pygame.transform.scale(load_image('level_blocks/main_block.png'), (48, 48)),
+    'empty': load_image('level_blocks/background_block.png')
+}
 
 tile_width = tile_height = 50
 
@@ -46,8 +46,7 @@ def generate_level(level):
                 Tile('wall', x, y)
             elif level[y][x] == '@':
                 Tile('empty', x, y)
-                new_player = Player(100, 15, x, y, [load_file.animation_LEFT_Player, load_file.animation_STAY,
-                                                    load_file.animation_RIGHT], player_group, all_sprites)
+                # new_player = Player(100, 15, 96, 300, player_group, all_sprites)
     # вернем игрока, а также размер поля в клетках
     return new_player, x, y
 
@@ -56,8 +55,8 @@ def startGame():
     clock = pygame.time.Clock()
     # игра - это цикл
     player, level_x, level_y = generate_level(load_level('level.txt'))
-    # new_player = Player(100, 15, x, y, [animation_LEFT_Player, animation_RIGHT, animation_STAY], player_group, all_sprites)
-    enemy = Enemy(10, 5, 250, 290, [load_file.animation_LEFT_Enemy, load_file.animation_IDLE], enemy_group, all_sprites)
+    my_player = Player(100, 15, 600, 700, player_group, all_sprites)
+    enemy = Enemy(10, 5, 700, 690, enemy_group, all_sprites)
     running = True
     while running:
         # обработка событий
@@ -69,7 +68,7 @@ def startGame():
         # задаем фон экрана
         screen.fill((0, 0, 0))
         player_group.update()
-        enemy_group.update(player)
+        enemy_group.update(my_player)
         # визуализация
         all_sprites.draw(screen)
         # замедляем время
@@ -78,7 +77,8 @@ def startGame():
         pygame.display.flip()
 
 
-menu = pygame_menu.Menu("Minotaur's Labyrinth", 500, 500, theme=pygame_menu.themes.THEME_GREEN)
+menu = pygame_menu.Menu("Minotaur's Labyrinth", 800, 800, theme=pygame_menu.themes.THEME_GREEN)
+
 
 
 menu.add.button('Play', startGame)
