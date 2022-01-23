@@ -52,7 +52,7 @@ class Player(Character):
         self.acc = vec(0, 0)
 
     def update(self):
-        self.acc = vec(0, 0.1)
+        self.acc = vec(0, 0.5)
         key = pygame.key.get_pressed()
         if key[pygame.K_LEFT]:
             self.rect.x -= self.MOVE_SPEED
@@ -87,8 +87,8 @@ class Player(Character):
             if key[pygame.K_1]:
                 self.startAnimation(load_file.animation_SGUN_Player)
 
-        self.acc.x += self.vel.x
-        self.vel += self.acc
+        self.acc.x = self.vel.x
+        self.vel = self.acc
         self.rect += self.vel
 
 

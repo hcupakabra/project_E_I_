@@ -4,7 +4,7 @@ import sys
 import os
 from Characters import *
 from level import *
-from load_file import load_image
+from load_file import *
 # инициализация pygame
 pygame.init()
 SIZE = (WIDTH, HEIGHT) = (800, 800)
@@ -16,12 +16,6 @@ screen = pygame.display.set_mode(SIZE)
 all_sprites = pygame.sprite.Group()
 player_group = pygame.sprite.Group()
 enemy_group = pygame.sprite.Group()
-
-tile_images = {
-    'wall': pygame.transform.scale(load_image('level_blocks/main_block.png'), (48, 48)),
-    'empty': load_image('level_blocks/background_block.png')
-}
-
 tile_width = tile_height = 50
 
 
@@ -55,7 +49,7 @@ def startGame():
     clock = pygame.time.Clock()
     # игра - это цикл
     player, level_x, level_y = generate_level(load_level('level.txt'))
-    my_player = Player(100, 15, 600, 500, player_group, all_sprites)
+    player = Player(100, 15, 600, 500, player_group, all_sprites)
     enemy = Enemy(10, 5, 700, 690, enemy_group, all_sprites)
     running = True
     while running:
@@ -68,7 +62,7 @@ def startGame():
         # задаем фон экрана
         screen.fill((0, 0, 0))
         player_group.update()
-        enemy_group.update(my_player)
+        enemy_group.update(player)
         # визуализация
         all_sprites.draw(screen)
         # замедляем время
@@ -78,7 +72,6 @@ def startGame():
 
 
 menu = pygame_menu.Menu("Minotaur's Labyrinth", 800, 800, theme=pygame_menu.themes.THEME_GREEN)
-
 
 
 menu.add.button('Play', startGame)
