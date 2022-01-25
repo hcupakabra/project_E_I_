@@ -56,10 +56,8 @@ class Player(Character):
         key = pygame.key.get_pressed()
         if key[pygame.K_LEFT]:
             self.rect.x -= self.MOVE_SPEED
-            self.startAnimation(load_file.animation_LEFT_Player)
+            self.startAnimation(load_file.animation_LGUN_Player)
             if key[pygame.K_1]:
-                self.startAnimation(load_file.animation_LGUN_Player)
-            if key[pygame.K_e]:
                 self.startAnimation(load_file.animation_ATLGUN_Player)
             if key[pygame.K_UP]:
                 self.rect.y -= self.MOVE_SPEED
@@ -69,9 +67,9 @@ class Player(Character):
                 self.startAnimation(load_file.animation_LDOWN_Player)
         elif key[pygame.K_RIGHT]:
             self.rect.x += self.MOVE_SPEED
-            self.startAnimation(load_file.animation_RIGHT_Player)
+            self.startAnimation(load_file.animation_RGUN_Player)
             if key[pygame.K_1]:
-                self.startAnimation(load_file.animation_RGUN_Player)
+                self.startAnimation(load_file.animation_ATRGUN_Player)
             if key[pygame.K_UP]:
                 self.rect.y -= self.MOVE_SPEED
                 self.startAnimation(load_file.animation_RUP_Player)

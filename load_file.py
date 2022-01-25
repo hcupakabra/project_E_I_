@@ -99,6 +99,9 @@ animation_SGUN_Player = [pygame.transform.scale(load_image('player/staygun.png',
 animation_ATLGUN_Player = [pygame.transform.scale(load_image('player/lat1.png', colorkey=-1), (50, 50)),
                            pygame.transform.scale(load_image('player/lat2.png', colorkey=-1), (50, 50)),
                            pygame.transform.scale(load_image('player/lat3.png', colorkey=-1), (50, 50))]
+animation_ATRGUN_Player = [pygame.transform.scale(load_image('player/rat1.png', colorkey=-1), (50, 50)),
+                           pygame.transform.scale(load_image('player/rat2.png', colorkey=-1), (50, 50)),
+                           pygame.transform.scale(load_image('player/rat3.png', colorkey=-1), (50, 50))]
 wall = [pygame.transform.scale(load_image('level_blocks/main_block.png'), (50, 50))]
 
 
