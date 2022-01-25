@@ -1,6 +1,7 @@
 import os
 import sys
 import pygame
+
 pygame.init()
 # from pygame import *
 SIZE = (WIDTH, HEIGHT) = (500, 500)
@@ -34,7 +35,7 @@ animation_IDLE_ENEMY = [
     pygame.transform.scale(load_image("pavuk/idle0.png", colorkey=-1), (50, 50)),
     pygame.transform.scale(load_image("pavuk/idle1.png", colorkey=-1), (50, 50)),
     pygame.transform.scale(load_image("pavuk/idle2.png", colorkey=-1), (50, 50)),
-    pygame.transform.scale(load_image("pavuk/idle3.png", colorkey=-1), (50, 50)),]
+    pygame.transform.scale(load_image("pavuk/idle3.png", colorkey=-1), (50, 50)), ]
 animation_ATTACK_ENEMY = [
     pygame.transform.scale(load_image("pavuk/attack0.png", colorkey=-1), (50, 50)),
     pygame.transform.scale(load_image("pavuk/attack1.png", colorkey=-1), (50, 50)),
@@ -95,6 +96,10 @@ animation_LGUN_Player = [pygame.transform.scale(load_image('player/lgun1.png', c
                          pygame.transform.scale(load_image('player/lgun2.png', colorkey=-1), (50, 50)),
                          pygame.transform.scale(load_image('player/lgun3.png', colorkey=-1), (50, 50))]
 animation_SGUN_Player = [pygame.transform.scale(load_image('player/staygun.png', colorkey=-1), (50, 50))]
+animation_ATLGUN_Player = [pygame.transform.scale(load_image('player/lat1.png', colorkey=-1), (50, 50)),
+                           pygame.transform.scale(load_image('player/lat2.png', colorkey=-1), (50, 50)),
+                           pygame.transform.scale(load_image('player/lat3.png', colorkey=-1), (50, 50))]
+wall = [pygame.transform.scale(load_image('level_blocks/main_block.png'), (50, 50))]
 
 
 def load_level(filename):
@@ -112,4 +117,4 @@ def load_level(filename):
 
 tile_images = {
     'wall': pygame.transform.scale(load_image('level_blocks/main_block.png'), (50, 50)),
-    'empty': load_image('level_blocks/background_block.png')}
+    'empty': pygame.transform.scale(load_image('level_blocks/background_block.png'), (51, 51))}

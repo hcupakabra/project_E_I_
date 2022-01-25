@@ -59,6 +59,8 @@ class Player(Character):
             self.startAnimation(load_file.animation_LEFT_Player)
             if key[pygame.K_1]:
                 self.startAnimation(load_file.animation_LGUN_Player)
+            if key[pygame.K_e]:
+                self.startAnimation(load_file.animation_ATLGUN_Player)
             if key[pygame.K_UP]:
                 self.rect.y -= self.MOVE_SPEED
                 self.startAnimation(load_file.animation_LUP_Player)
