@@ -52,7 +52,7 @@ class Player(Character):
         self.acc = vec(0, 0)
 
     def update(self):
-        self.acc = vec(0, 0.5)
+        self.acc = vec(0, 10)
         key = pygame.key.get_pressed()
         if key[pygame.K_LEFT]:
             self.rect.x -= self.MOVE_SPEED
@@ -90,6 +90,7 @@ class Player(Character):
         self.acc.x = self.vel.x
         self.vel = self.acc
         self.rect += self.vel
+
 
 class Enemy(Character):
 

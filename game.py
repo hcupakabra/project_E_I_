@@ -8,11 +8,8 @@ from load_file import *
 # инициализация pygame
 pygame.init()
 SIZE = (WIDTH, HEIGHT) = (800, 800)
-# задаем базовые константы (переменные, которые не хотим менятьб по PEP8 пишутся большими буквами)
 FONT = pygame_menu.font.FONT_8BIT
-# задаем сам экран, соответствующего размера
 screen = pygame.display.set_mode(SIZE)
-# место для групп (будем группировать объекты в игре, чтобы можно было запускать действия сразу для всех в группе)
 all_sprites = pygame.sprite.Group()
 player_group = pygame.sprite.Group()
 enemy_group = pygame.sprite.Group()
@@ -49,7 +46,7 @@ def startGame():
     clock = pygame.time.Clock()
     # игра - это цикл
     player, level_x, level_y = generate_level(load_level('level.txt'))
-    player = Player(100, 15, 600, 500, player_group, all_sprites)
+    my_player = Player(100, 15, 600, 500, player_group, all_sprites)
     enemy = Enemy(10, 5, 700, 690, enemy_group, all_sprites)
     running = True
     while running:
@@ -62,7 +59,7 @@ def startGame():
         # задаем фон экрана
         screen.fill((0, 0, 0))
         player_group.update()
-        enemy_group.update(player)
+        enemy_group.update(my_player, player_group)
         # визуализация
         all_sprites.draw(screen)
         # замедляем время
