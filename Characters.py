@@ -91,22 +91,57 @@ class Player(Character):
         self.vel = self.acc
         self.rect += self.vel
 
-
 class Enemy(Character):
+
     def __init__(self, hp, dmg, x, y, *groups):
         super().__init__(hp, dmg, x, y, *groups)
-        self.movement_speed = 7
-        self.distance_to_player = 50
-        self.image = load_file.animation_IDLE_ENEMY[self.index]
-        self.w = 192
+        self.MOVEMENT_SPEED = 7
+        self.distance_to_player_x = 150
+        self.ATTACK_DISTANCE = 8
+        self.ATTACK_DISTANCE_RIGHT = 20
+        self.distance_to_player_y = 50
+        self.image = animation_IDLE_LEFT[self.index]
+        self.w = 100
+        self.h = 100
 
-    def update(self, player):
-        # print("P", player.rect.x - player.w)
-        # print("S", self.rect.x - self.w)
-        if self.rect.x - player.rect.x > self.distance_to_player:
-            self.startAnimation(load_file.animation_IDLE_ENEMY)
-        elif player.rect.x - self.rect.x <= self.distance_to_player:
-            self.startAnimation(load_file.animation_LEFT_ENEMY)
-            self.rect.x -= self.movement_speed
-        elif (player.rect.x - player.w) + (self.rect.x - self.w) >= 68:
-            self.startAnimation(load_file.animation_ATTACK_ENEMY)
+    def check_collide(self, player):
+        # print("P:", player.rect.x)
+        # print("E:", self.rect.x)
+        if player.rect.x < self.rect.x - self.distance_to_player_x or not self.is_alive(player):
+            self.startAnimation(animation_IDLE_LEFT)
+            return False
+        elif (self.rect.x - player.rect.x <= self.distance_to_player_x) and (
+                self.rect.x - player.rect.x > self.ATTACK_DISTANCE):
+            self.startAnimation(animation_LEFT)
+            self.rect.x -= self.MOVEMENT_SPEED
+        elif (self.rect.x - player.rect.x <= self.ATTACK_DISTANCE) and self.rect.x - player.rect.x >= 0 and self.is_alive(player):
+            self.startAnimation(animation_ATTACK_LEFT)
+        elif (player.rect.x - self.rect.x - player.w <= self.distance_to_player_x) and (
+                player.rect.x - self.rect.x - player.w > self.ATTACK_DISTANCE):
+            self.startAnimation(animation_RIGHT)
+            self.rect.x += self.MOVEMENT_SPEED
+        elif player.rect.x - self.rect.x - player.w <= self.ATTACK_DISTANCE + self.w and self.is_alive(player):
+            self.startAnimation(animation_ATTACK_RIGHT)
+        elif self.rect.x < player.rect.x - self.distance_to_player_x or not self.is_alive(player):
+            self.startAnimation(animation_IDLE_RIGHT)
+
+    def update(self, player, player_group):
+        self.check_collide(player)
+        # self.cause_damage(player, player_group)
+
+    def is_alive(self, player):
+        if player.hp > 0:
+            return True
+        else:
+            return False
+
+    # def cause_damage(self, player, player_group):
+    #     print(pygame.sprite.spritecollide(self, player_group, False))
+    #     if pygame.sprite.spritecollide(self, player_group, False):
+    #         while self.is_alive(player):
+    #             player.hp -= self.dmg
+    #             time.sleep(5)
+    #             if not self.is_alive(player):
+    #                 player.kill()
+    #                 break
+
