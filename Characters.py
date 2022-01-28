@@ -1,13 +1,12 @@
 import pygame
 import pygame_menu
-
 import load_file
 from load_file import *
+
 # инициализация pygame
 pygame.init()
 
 # задаем базовые константы (переменные, которые не хотим менятьб по PEP8 пишутся большими буквами)
-vec = pygame.math.Vector2
 SIZE = (WIDTH, HEIGHT) = (500, 500)
 
 # задаем сам экран, соответствующего размера
@@ -41,7 +40,6 @@ class Player(Character):
     def __init__(self, hp, dmg, x, y, *groups):
         super().__init__(hp, dmg, x, y, *groups)
         self.MOVE_SPEED = 10
-        self.JUMP_POWER = 10
         self.image = load_file.animation_STAY_Player[self.index]
         self.w = 100
 
@@ -80,6 +78,12 @@ class Player(Character):
             if key[pygame.K_1]:
                 self.startAnimation(load_file.animation_SGUN_Player)
 
+    def xren(self, enemy):
+        if pygame.sprite.collide_rect(self, enemy):
+            return True
+        else:
+            return False
+
 
 class Enemy(Character):
 
@@ -95,43 +99,40 @@ class Enemy(Character):
         self.h = 100
 
     def check_collide(self, player):
+        # print(self.hp)
         # print("P:", player.rect.x)
         # print("E:", self.rect.x)
-        if player.rect.x < self.rect.x - self.distance_to_player_x or not self.is_alive(player):
+        if player.rect.x < self.rect.x - self.distance_to_player_x and self.hp > 0:
             self.startAnimation(animation_IDLE_LEFT)
-            return False
         elif (self.rect.x - player.rect.x <= self.distance_to_player_x) and (
-                self.rect.x - player.rect.x > self.ATTACK_DISTANCE):
+                self.rect.x - player.rect.x > self.ATTACK_DISTANCE) and self.hp > 0:
             self.startAnimation(animation_LEFT)
             self.rect.x -= self.MOVEMENT_SPEED
-        elif (self.rect.x - player.rect.x <= self.ATTACK_DISTANCE) and self.rect.x - player.rect.x >= 0 and self.is_alive(player):
+        elif (
+                self.rect.x - player.rect.x <= self.ATTACK_DISTANCE) and self.rect.x - player.rect.x >= 0 and self.hp > 0:
             self.startAnimation(animation_ATTACK_LEFT)
         elif (player.rect.x - self.rect.x - player.w <= self.distance_to_player_x) and (
-                player.rect.x - self.rect.x - player.w > self.ATTACK_DISTANCE):
+                player.rect.x - self.rect.x - player.w > self.ATTACK_DISTANCE) and self.hp > 0:
             self.startAnimation(animation_RIGHT)
             self.rect.x += self.MOVEMENT_SPEED
-        elif player.rect.x - self.rect.x - player.w <= self.ATTACK_DISTANCE + self.w and self.is_alive(player):
+        elif player.rect.x - self.rect.x - player.w <= self.ATTACK_DISTANCE + self.w and self.hp > 0:
             self.startAnimation(animation_ATTACK_RIGHT)
-        elif self.rect.x < player.rect.x - self.distance_to_player_x or not self.is_alive(player):
+        elif self.rect.x < player.rect.x - self.distance_to_player_x and self.hp > 0:
             self.startAnimation(animation_IDLE_RIGHT)
+        elif self.hp < 0:
+            self.startAnimation(animation_DEATH)
+
+
 
     def update(self, player, player_group):
         self.check_collide(player)
+        self.is_alive()
         # self.cause_damage(player, player_group)
 
-    def is_alive(self, player):
-        if player.hp > 0:
+    def is_alive(self):
+        if self.hp > 0:
             return True
         else:
             return False
 
-    # def cause_damage(self, player, player_group):
-    #     print(pygame.sprite.spritecollide(self, player_group, False))
-    #     if pygame.sprite.spritecollide(self, player_group, False):
-    #         while self.is_alive(player):
-    #             player.hp -= self.dmg
-    #             time.sleep(5)
-    #             if not self.is_alive(player):
-    #                 player.kill()
-    #                 break
 

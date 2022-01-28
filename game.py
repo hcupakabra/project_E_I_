@@ -2,6 +2,8 @@ import pygame
 import pygame_menu
 import sys
 import os
+
+import Characters
 from Characters import *
 from level import *
 from load_file import *
@@ -47,12 +49,14 @@ def startGame():
     # игра - это цикл
     player, level_x, level_y = generate_level(load_level('level.txt'))
     my_player = Player(100, 15, 600, 500, player_group, all_sprites)
-    enemy = Enemy(10, 5, 700, 680, enemy_group, all_sprites)
+    enemy = Enemy(7, 5, 700, 680, enemy_group, all_sprites)
     running = True
-    a = input()
     while running:
         # обработка событий
         for event in pygame.event.get():
+            if Characters.Player.xren(my_player, enemy):
+                enemy.hp -= my_player.dmg
+                # print(enemy.hp)
             # обрабатываем событие нажатия на крестик
             if event.type == pygame.QUIT:
                 # завершаем цикл игры
