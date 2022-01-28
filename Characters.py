@@ -9,9 +9,6 @@ pygame.init()
 # задаем базовые константы (переменные, которые не хотим менятьб по PEP8 пишутся большими буквами)
 vec = pygame.math.Vector2
 SIZE = (WIDTH, HEIGHT) = (500, 500)
-FONT = pygame_menu.font.FONT_8BIT
-ACC = 0.1
-FRIC = -0.12
 
 # задаем сам экран, соответствующего размера
 screen = pygame.display.set_mode(SIZE)
@@ -43,16 +40,12 @@ class Character(pygame.sprite.Sprite):
 class Player(Character):
     def __init__(self, hp, dmg, x, y, *groups):
         super().__init__(hp, dmg, x, y, *groups)
-        self.MOVE_SPEED = 35
+        self.MOVE_SPEED = 10
         self.JUMP_POWER = 10
         self.image = load_file.animation_STAY_Player[self.index]
         self.w = 100
-        self.rect = x, y = 600, 500
-        self.vel = vec(0, 0)
-        self.acc = vec(0, 0)
 
     def update(self):
-        self.acc = vec(0, 0)
         key = pygame.key.get_pressed()
         if key[pygame.K_LEFT]:
             self.rect.x -= self.MOVE_SPEED
@@ -86,10 +79,6 @@ class Player(Character):
             self.startAnimation(load_file.animation_STAY_Player)
             if key[pygame.K_1]:
                 self.startAnimation(load_file.animation_SGUN_Player)
-
-        self.acc.x = self.vel.x
-        self.vel = self.acc
-        self.rect += self.vel
 
 
 class Enemy(Character):
