@@ -99,6 +99,7 @@ class Enemy(Character):
         self.h = 100
 
     def check_collide(self, player):
+        self.a = False
         # print(self.hp)
         # print("P:", player.rect.x)
         # print("E:", self.rect.x)
@@ -121,8 +122,7 @@ class Enemy(Character):
             self.startAnimation(animation_IDLE_RIGHT)
         elif self.hp < 0:
             self.startAnimation(animation_DEATH)
-
-
+            self.a = True
 
     def update(self, player, player_group):
         self.check_collide(player)
