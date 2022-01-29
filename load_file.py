@@ -198,3 +198,4 @@ def load_level(filename):
 
     # дополняем каждую строку пустыми клетками ('.')
     return list(map(lambda x: x.ljust(max_width, '.'), level_map))
+

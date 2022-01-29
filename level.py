@@ -53,7 +53,9 @@ def generate_level(level):
                 Tile('wall', x, y)
             elif level[y][x] == '@':
                 Tile('empty', x, y)
-                # my_player = Player(100, 15, 96, 300, player_group, all_sprites)
     # вернем игрока, а также размер поля в клетках
     return new_player, x, y
+
+
 # player, level_x, level_y = generate_level(load_level('level.txt'))
+

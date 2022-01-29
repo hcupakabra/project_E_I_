@@ -100,9 +100,6 @@ class Enemy(Character):
 
     def check_collide(self, player):
         self.a = False
-        # print(self.hp)
-        # print("P:", player.rect.x)
-        # print("E:", self.rect.x)
         if player.rect.x < self.rect.x - self.distance_to_player_x and self.hp > 0:
             self.startAnimation(animation_IDLE_LEFT)
         elif (self.rect.x - player.rect.x <= self.distance_to_player_x) and (
@@ -127,10 +124,11 @@ class Enemy(Character):
     def update(self, player, player_group):
         self.check_collide(player)
         self.is_alive()
-        # self.cause_damage(player, player_group)
 
     def is_alive(self):
         if self.hp > 0:
             return True
         else:
             return False
+
+
