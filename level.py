@@ -57,7 +57,5 @@ def generate_level(level):
     return new_player, x, y
 
 
-
-
 # player, level_x, level_y = generate_level(load_level('level.txt'))
 
