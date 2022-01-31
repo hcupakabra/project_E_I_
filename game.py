@@ -48,8 +48,8 @@ def startGame():
     clock = pygame.time.Clock()
     # игра - это цикл
     player, level_x, level_y = generate_level(load_level('level.txt'))
-    my_player = Player(100, 15, 100, 700, player_group, all_sprites)
-    enemy = Enemy(7, 5, 700, 680, enemy_group, all_sprites)
+    my_player = Player(100, 20, 100, 700, player_group, all_sprites)
+    enemy = Enemy(60, 15, 700, 680, enemy_group, all_sprites)
     running = True
     while running:
         key = pygame.key.get_pressed()
@@ -61,6 +61,13 @@ def startGame():
                     final_menu = pygame_menu.Menu("You're a lazy winner XD", 800, 800, theme=pygame_menu.themes.THEME_GREEN)
                     final_menu.add.button('Quit', pygame_menu.events.EXIT)
                     final_menu.mainloop(screen)
+            if Characters.Player.xren(my_player, enemy):
+                my_player.hp -= enemy.dmg
+                print(my_player.hp)
+                if my_player.hp <= 0:
+                    final_menu_2 = pygame_menu.Menu("You lose", 800, 800, theme=pygame_menu.themes.THEME_GREEN)
+                    final_menu_2.add.button('Quit', pygame_menu.events.EXIT)
+                    final_menu_2.mainloop(screen)
             # обрабатываем событие нажатия на крестик
             if event.type == pygame.QUIT:
                 # завершаем цикл игры
