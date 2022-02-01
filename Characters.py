@@ -34,6 +34,7 @@ class Character(pygame.sprite.Sprite):
         if self.index >= len(base_images):
             self.index = 0
         self.image = base_images[self.index]
+        return self.image
 
 
 class Player(Character):
@@ -97,9 +98,11 @@ class Enemy(Character):
         self.image = animation_IDLE_LEFT[self.index]
         self.w = 100
         self.h = 100
+        self.attack_image_left = animation_ATTACK_LEFT[13]
+        self.attack_image_right = animation_ATTACK_RIGHT[13]
+
 
     def check_collide(self, player):
-        self.a = False
         if player.rect.x < self.rect.x - self.distance_to_player_x and self.hp > 0:
             self.startAnimation(animation_IDLE_LEFT)
         elif (self.rect.x - player.rect.x <= self.distance_to_player_x) and (
@@ -121,7 +124,7 @@ class Enemy(Character):
             self.startAnimation(animation_DEATH)
             self.a = True
 
-    def update(self, player, player_group):
+    def update(self, player):
         self.check_collide(player)
         self.is_alive()
 
@@ -130,5 +133,4 @@ class Enemy(Character):
             return True
         else:
             return False
-
 

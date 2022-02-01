@@ -1,7 +1,5 @@
-import pygame
-import pygame_menu
-import sys
-import os
+
+import threading
 
 import Characters
 from Characters import *
@@ -44,29 +42,36 @@ def generate_level(level):
     return new_player, x, y
 
 
+
 def startGame():
     clock = pygame.time.Clock()
     # игра - это цикл
-    player, level_x, level_y = generate_level(load_level('level.txt'))
-    my_player = Player(100, 10, 100, 700, player_group, all_sprites)
-    enemy = Enemy(60, 10, 700, 680, enemy_group, all_sprites)
+    generate_level(load_level('level.txt'))
+    my_player = Player(100, 20, 100, 700, player_group, all_sprites)
+    my_enemy = Enemy(60, 10, 700, 680, enemy_group, all_sprites)
     running = True
+    score = 0
     while running:
         key = pygame.key.get_pressed()
         # обработка событий
         for event in pygame.event.get():
-            if Characters.Player.xren(my_player, enemy) and key[pygame.K_1]:
-                enemy.hp -= my_player.dmg
-                if enemy.hp <= 0:
+            if Characters.Player.xren(my_player, my_enemy) and key[pygame.K_1]:
+                my_enemy.hp -= my_player.dmg
+                score += my_player.dmg
+
+                print(score)
+                if my_enemy.hp <= 0:
                     final_menu = pygame_menu.Menu("You're a lazy winner XD", 800, 800, theme=pygame_menu.themes.THEME_GREEN)
                     final_menu.add.button('Quit', pygame_menu.events.EXIT)
+                    final_menu.add.label(f"Your score: {score}")
                     final_menu.mainloop(screen)
-            if Characters.Player.xren(my_player, enemy):
-                my_player.hp -= enemy.dmg
-                print(my_player.hp)
+            if Characters.Player.xren(my_player, my_enemy):
+                my_player.hp -= my_enemy.dmg
+
                 if my_player.hp <= 0:
                     final_menu_2 = pygame_menu.Menu("You lose", 800, 800, theme=pygame_menu.themes.THEME_GREEN)
                     final_menu_2.add.button('Quit', pygame_menu.events.EXIT)
+                    final_menu_2.add.label(f"Your score: {score}")
                     final_menu_2.mainloop(screen)
             # обрабатываем событие нажатия на крестик
             if event.type == pygame.QUIT:
@@ -75,7 +80,7 @@ def startGame():
         # задаем фон экрана
         screen.fill((0, 0, 0))
         player_group.update()
-        enemy_group.update(my_player, player_group)
+        enemy_group.update(my_player)
         # визуализация
         all_sprites.draw(screen)
         # замедляем время
